@@ -1,3 +1,27 @@
+# E-Commerce Web Application - Week 1 Submission
+
+## Project Overview
+This project is part of the DevelopersHub Corporation internship. The goal for Week 1 was to analyze the design and implement a functional layout using a modern tech stack.
+
+## Tech Stack
+- **Framework:** Next.js 15
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+- **Language:** TypeScript
+
+## Completed Tasks
+- [x] Analyzed Figma/Design layouts.
+- [x] Set up professional project architecture.
+- [x] Developed a fully responsive **Header** with search and navigation.
+- [x] Developed a detailed **Footer** with categorized links.
+- [x] (Bonus) Implemented all 5 core pages: Home, Product List (Grid/List), Product Detail, and Cart.
+
+## How to Run
+1. Clone the repo: `git clone []`
+2. Install dependencies: `npm install`
+3. Run development server: `npm run dev`
+
+4. 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
