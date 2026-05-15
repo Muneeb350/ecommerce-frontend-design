@@ -17,7 +17,7 @@ This project is part of the DevelopersHub Corporation internship. The goal for W
 - [x] (Bonus) Implemented all 5 core pages: Home, Product List (Grid/List), Product Detail, and Cart.
 
 ## How to Run
-1. Clone the repo: `git clone []`
+1. Clone the repo: `git clone [https://github.com/Muneeb350/ecommerce-frontend-design.git]`
 2. Install dependencies: `npm install`
 3. Run development server: `npm run dev`
 
