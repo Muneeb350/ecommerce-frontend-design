@@ -60,7 +60,7 @@ export default function ProductGridItem({
         flex flex-col
         bg-white border border-[#E5E7EB] rounded-xl
         hover:shadow-lg hover:-translate-y-1 hover:border-[#C5CCD6]
-        transition-all duration-200
+        transition-all duration-200 cursor-pointer
       "
     >
       {/* Image */}

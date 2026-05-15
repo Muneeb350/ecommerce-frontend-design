@@ -78,7 +78,7 @@ export default function SidebarFilters({ selectedBrands, onBrandToggle, selected
   const [maxPrice, setMaxPrice] = useState("999999");
 
   return (
-    <aside className="w-[220px] shrink-0 bg-white border border-[#E5E7EB] rounded-xl overflow-hidden self-start">
+    <aside className="w-full shrink-0 bg-white border border-[#E5E7EB] rounded-xl overflow-hidden self-start">
 
       {/* ── Category ── */}
       <FilterSection title="Category">

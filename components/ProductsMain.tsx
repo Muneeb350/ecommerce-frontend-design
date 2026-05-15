@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import SidebarFilters from "@/components/SidebarFilters";
 import ProductsToolbar from "@/components/ProductsToolbar";
 import FilterTagsBar from "@/components/FilterTagsBar";
@@ -26,8 +26,8 @@ export default function ProductsMain({ products }: Props) {
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery]       = useState("");
   const [currentPage, setCurrentPage]       = useState(1);
+  const [filterOpen, setFilterOpen]         = useState(false);
 
-  /* ── Brand toggle — resets to page 1 ── */
   const toggleBrand = (brand: string) => {
     setSelectedBrands((prev) => {
       const next = new Set(prev);
@@ -37,7 +37,6 @@ export default function ProductsMain({ products }: Props) {
     setCurrentPage(1);
   };
 
-  /* ── Category toggle — writes to URL, resets page ── */
   const handleCategoryChange = (cat: string) => {
     const next = new URLSearchParams(searchParams.toString());
     if (urlCategory === cat) {
@@ -50,7 +49,6 @@ export default function ProductsMain({ products }: Props) {
     setCurrentPage(1);
   };
 
-  /* ── Clear all filters ── */
   const clearAll = () => {
     setSelectedBrands(new Set());
     setCurrentPage(1);
@@ -60,10 +58,8 @@ export default function ProductsMain({ products }: Props) {
     router.push(`/products${qs ? `?${qs}` : ""}`);
   };
 
-  /* ── Tags shown = selected brands ── */
   const tags = Array.from(selectedBrands);
 
-  /* ── Full filtered list ── */
   const filtered = useMemo(
     () =>
       products.filter((p) => {
@@ -79,7 +75,6 @@ export default function ProductsMain({ products }: Props) {
     [products, searchQuery, selectedBrands, urlCategory]
   );
 
-  /* ── Pagination derived values ── */
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
   const safePage   = Math.min(currentPage, totalPages);
   const paginated  = filtered.slice(
@@ -87,21 +82,40 @@ export default function ProductsMain({ products }: Props) {
     safePage * ITEMS_PER_PAGE,
   );
 
+  const sidebarProps = {
+    selectedBrands,
+    onBrandToggle: toggleBrand,
+    selectedCategory: urlCategory,
+    onCategoryChange: handleCategoryChange,
+  };
+
   return (
     <div className="flex gap-5 items-start">
 
-      {/* Sidebar — hidden on mobile */}
-      <div className="hidden lg:block shrink-0">
-        <SidebarFilters
-          selectedBrands={selectedBrands}
-          onBrandToggle={toggleBrand}
-          selectedCategory={urlCategory}
-          onCategoryChange={handleCategoryChange}
-        />
+      {/* Sidebar — desktop only, fixed width */}
+      <div className="hidden lg:block w-[220px] shrink-0">
+        <SidebarFilters {...sidebarProps} />
       </div>
 
-      {/* Right column */}
+      {/* Right column — always full width on mobile */}
       <div className="flex-1 min-w-0 flex flex-col gap-4">
+
+        {/* Mobile filter toggle button */}
+        <button
+          type="button"
+          onClick={() => setFilterOpen((o) => !o)}
+          className="lg:hidden flex items-center gap-2 h-[42px] px-4 bg-white border border-[#E5E7EB] rounded-xl text-[13px] font-medium text-[#1C2434] hover:border-primary transition-colors cursor-pointer"
+        >
+          <SlidersHorizontal size={15} strokeWidth={2} />
+          {filterOpen ? "Hide filters" : "Show filters"}
+        </button>
+
+        {/* Mobile filter drawer */}
+        {filterOpen && (
+          <div className="lg:hidden">
+            <SidebarFilters {...sidebarProps} />
+          </div>
+        )}
 
         {/* Search */}
         <div className="relative">
@@ -137,7 +151,7 @@ export default function ProductsMain({ products }: Props) {
             {paginated.map((p) => <ProductListItem key={p.id} {...p} />)}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {paginated.map((p) => <ProductGridItem key={p.id} {...p} />)}
           </div>
         )}

@@ -13,7 +13,7 @@ export default function ProductsPage() {
 
       <main className="flex-1 bg-[#F7FAFC]">
 
-        <div className="max-w-[1280px] mx-auto px-6 pt-6 pb-10">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-6 pb-10">
 
           <Suspense fallback={<div className="h-[30px] mb-5" />}>
             <DynamicBreadcrumbs />

@@ -118,11 +118,11 @@ export default async function ProductDetailPage({ params }: Props) {
             <span className="text-[#1C2434] font-medium truncate max-w-[260px]">{title}</span>
           </nav>
 
-          {/* Two-column layout — 70 / 30 */}
-          <div className="flex gap-5 items-start">
+          {/* Two-column layout — stacks on mobile, 70/30 on md+ */}
+          <div className="flex flex-col md:flex-row gap-5 items-start">
 
-            {/* ── Left column (70%) ── */}
-            <div className="flex-[7] min-w-0 flex flex-col gap-4">
+            {/* ── Left column ── */}
+            <div className="w-full md:flex-[7] min-w-0 flex flex-col gap-4">
 
               {/* Main product card */}
               <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
@@ -220,8 +220,8 @@ export default async function ProductDetailPage({ params }: Props) {
 
             </div>
 
-            {/* ── Right column (30%) ── */}
-            <div className="flex-[3] shrink-0 flex flex-col gap-4">
+            {/* ── Right column ── */}
+            <div className="w-full md:flex-[3] md:shrink-0 flex flex-col gap-4">
 
               {/* Supplier card */}
               <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col gap-3">

@@ -3,10 +3,7 @@ import Image from "next/image";
 import WishlistButton from "@/components/WishlistButton";
 import { type Product } from "@/lib/products";
 
-/* Re-export so existing importers don't need to change */
 export type ProductListItemProps = Product;
-
-/* ── Stars ── */
 
 function Stars({ rating }: { rating: number }) {
   const filled = Math.round(rating);
@@ -30,8 +27,6 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-/* ── Component ── */
-
 export default function ProductListItem({
   id,
   title,
@@ -44,27 +39,32 @@ export default function ProductListItem({
   description,
 }: ProductListItemProps) {
   return (
-    <div className="relative flex gap-5 bg-white border border-[#E5E7EB] rounded-xl p-4 hover:shadow-lg hover:-translate-y-0.5 hover:border-[#C5CCD6] transition-all duration-200">
+    <div className="relative flex flex-col sm:flex-row gap-4 sm:gap-5 bg-white border border-[#E5E7EB] rounded-xl p-4 hover:shadow-lg hover:-translate-y-0.5 hover:border-[#C5CCD6] transition-all duration-200 cursor-pointer">
 
-      {/* Product image */}
-      <Link href={`/products/${id}`} className="w-[160px] h-[160px] shrink-0 relative rounded-lg bg-[#F7F7F7] overflow-hidden block">
+      {/* Product image — full-width on mobile, fixed square on sm+ */}
+      <Link
+        href={`/products/${id}`}
+        className="w-full h-[200px] sm:w-[160px] sm:h-[160px] shrink-0 relative rounded-lg bg-[#F7F7F7] overflow-hidden block"
+      >
         <Image
           src={src}
           alt={alt}
           fill
-          sizes="160px"
+          sizes="(max-width: 640px) 100vw, 160px"
           className="object-contain p-3"
         />
       </Link>
 
       {/* Content */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1.5 pr-10">
+      <div className="flex-1 min-w-0 flex flex-col gap-1.5 pr-0 sm:pr-10">
 
-        <Link href={`/products/${id}`} className="text-[15px] font-semibold text-[#1C2434] leading-snug hover:text-primary transition-colors">
+        <Link
+          href={`/products/${id}`}
+          className="text-[15px] font-semibold text-[#1C2434] leading-snug hover:text-primary transition-colors"
+        >
           {title}
         </Link>
 
-        {/* Prices */}
         <div className="flex items-center gap-3">
           <span className="text-[18px] font-bold text-[#1C2434]">
             ${price.toFixed(2)}
@@ -74,7 +74,6 @@ export default function ProductListItem({
           </span>
         </div>
 
-        {/* Rating + orders + shipping */}
         <div className="flex items-center gap-2 flex-wrap">
           <Stars rating={rating} />
           <span className="text-[12px] text-[#8B96A5]">{rating.toFixed(1)}</span>
@@ -84,12 +83,10 @@ export default function ProductListItem({
           <span className="text-[12px] font-medium text-[#00B517]">Free Shipping</span>
         </div>
 
-        {/* Description */}
         <p className="text-[13px] text-[#8B96A5] leading-relaxed line-clamp-2">
           {description}
         </p>
 
-        {/* View details */}
         <Link
           href={`/products/${id}`}
           className="mt-auto text-[13px] font-medium text-[#1C7ACC] hover:underline"
@@ -99,10 +96,10 @@ export default function ProductListItem({
 
       </div>
 
-      {/* Wishlist */}
+      {/* Wishlist — absolute on desktop, hidden on mobile to avoid overlap */}
       <WishlistButton
         iconSize={16}
-        className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F5F5F5] hover:bg-[#EFF2F4] text-[#8B96A5] flex items-center justify-center transition-colors shrink-0"
+        className="hidden sm:flex absolute top-4 right-4 w-9 h-9 rounded-full bg-[#F5F5F5] hover:bg-[#EFF2F4] text-[#8B96A5] items-center justify-center transition-colors shrink-0"
       />
 
     </div>
