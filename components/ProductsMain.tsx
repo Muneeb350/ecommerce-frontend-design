@@ -10,6 +10,8 @@ import ProductListItem, { type ProductListItemProps } from "@/components/Product
 import ProductGridItem from "@/components/ProductGridItem";
 import Pagination from "@/components/Pagination";
 
+const ITEMS_PER_PAGE = 6;
+
 interface Props {
   products: ProductListItemProps[];
 }
@@ -20,19 +22,22 @@ export default function ProductsMain({ products }: Props) {
 
   const urlCategory = searchParams.get("category") ?? "";
 
-  const [viewMode, setViewMode]             = useState<"list" | "grid">("list");
+  const [viewMode, setViewMode]             = useState<"list" | "grid">("grid");
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery]       = useState("");
+  const [currentPage, setCurrentPage]       = useState(1);
 
-  /* ── Brand toggle ── */
-  const toggleBrand = (brand: string) =>
+  /* ── Brand toggle — resets to page 1 ── */
+  const toggleBrand = (brand: string) => {
     setSelectedBrands((prev) => {
       const next = new Set(prev);
       next.has(brand) ? next.delete(brand) : next.add(brand);
       return next;
     });
+    setCurrentPage(1);
+  };
 
-  /* ── Category toggle — writes to URL ── */
+  /* ── Category toggle — writes to URL, resets page ── */
   const handleCategoryChange = (cat: string) => {
     const next = new URLSearchParams(searchParams.toString());
     if (urlCategory === cat) {
@@ -42,11 +47,13 @@ export default function ProductsMain({ products }: Props) {
     }
     const qs = next.toString();
     router.push(`/products${qs ? `?${qs}` : ""}`);
+    setCurrentPage(1);
   };
 
   /* ── Clear all filters ── */
   const clearAll = () => {
     setSelectedBrands(new Set());
+    setCurrentPage(1);
     const next = new URLSearchParams(searchParams.toString());
     next.delete("category");
     const qs = next.toString();
@@ -56,7 +63,7 @@ export default function ProductsMain({ products }: Props) {
   /* ── Tags shown = selected brands ── */
   const tags = Array.from(selectedBrands);
 
-  /* ── Filtered product list ── */
+  /* ── Full filtered list ── */
   const filtered = useMemo(
     () =>
       products.filter((p) => {
@@ -70,6 +77,14 @@ export default function ProductsMain({ products }: Props) {
         return matchesSearch && matchesBrand && matchesCategory;
       }),
     [products, searchQuery, selectedBrands, urlCategory]
+  );
+
+  /* ── Pagination derived values ── */
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const safePage   = Math.min(currentPage, totalPages);
+  const paginated  = filtered.slice(
+    (safePage - 1) * ITEMS_PER_PAGE,
+    safePage * ITEMS_PER_PAGE,
   );
 
   return (
@@ -97,7 +112,10 @@ export default function ProductsMain({ products }: Props) {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             placeholder="Search products…"
             className="w-full h-[42px] pl-9 pr-4 text-[13px] text-[#1C1C1C] placeholder:text-[#8B96A5] bg-white border border-[#E5E7EB] rounded-xl outline-none focus:border-primary transition-colors"
           />
@@ -116,15 +134,19 @@ export default function ProductsMain({ products }: Props) {
           </div>
         ) : viewMode === "list" ? (
           <div className="flex flex-col gap-4">
-            {filtered.map((p) => <ProductListItem key={p.id} {...p} />)}
+            {paginated.map((p) => <ProductListItem key={p.id} {...p} />)}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((p) => <ProductGridItem key={p.id} {...p} />)}
+            {paginated.map((p) => <ProductGridItem key={p.id} {...p} />)}
           </div>
         )}
 
-        <Pagination />
+        <Pagination
+          page={safePage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
 
       </div>
     </div>

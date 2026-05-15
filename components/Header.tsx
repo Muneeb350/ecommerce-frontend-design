@@ -93,7 +93,10 @@ export default function Header() {
             />
 
             {/* Search button */}
-            <button className="flex items-center justify-center gap-2 px-6 bg-primary hover:bg-primary-hover text-white text-sm font-semibold transition-colors shrink-0">
+            <button
+              className="flex items-center justify-center gap-2 px-6 bg-primary hover:bg-primary-hover text-white text-sm font-semibold transition-colors shrink-0"
+              onClick={() => console.log("Search feature coming soon")}
+            >
               <Search size={16} strokeWidth={2.5} />
               <span>Search</span>
             </button>

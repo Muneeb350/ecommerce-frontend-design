@@ -98,7 +98,7 @@ export default function Hero() {
               </h2>
               <Link
                 href="/products"
-                className="inline-block px-5 py-[7px] border border-[#1C2434] text-[#1C2434] text-[13px] font-medium rounded hover:bg-[#1C2434] hover:text-white transition-colors cursor-pointer"
+                className="inline-block px-5 py-[7px] border border-[#1C2434] text-[#1C2434] text-[13px] font-medium rounded hover:bg-[#1C2434] hover:text-white hover:shadow-md transition-all duration-200 cursor-pointer"
               >
                 Learn more
               </Link>

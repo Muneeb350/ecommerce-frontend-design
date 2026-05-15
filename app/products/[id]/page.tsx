@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import ProductTabs from "@/components/ProductTabs";
+import ProductActions from "@/components/ProductActions";
 import { PRODUCTS } from "@/lib/products";
 
 interface Props {
@@ -186,7 +187,15 @@ export default async function ProductDetailPage({ params }: Props) {
                       ))}
                     </div>
 
-                    {/* Action buttons */}
+                    {/* Buy Now + Add to Cart — client component handles localStorage & routing */}
+                    <ProductActions
+                      id={numericId}
+                      title={title}
+                      price={price}
+                      src={src}
+                    />
+
+                    {/* Secondary actions */}
                     <div className="flex flex-col gap-2 mt-2">
                       <button
                         type="button"

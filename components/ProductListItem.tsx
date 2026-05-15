@@ -44,7 +44,7 @@ export default function ProductListItem({
   description,
 }: ProductListItemProps) {
   return (
-    <div className="relative flex gap-5 bg-white border border-[#E5E7EB] rounded-xl p-4 hover:shadow-md hover:border-[#C5CCD6] transition-all duration-200">
+    <div className="relative flex gap-5 bg-white border border-[#E5E7EB] rounded-xl p-4 hover:shadow-lg hover:-translate-y-0.5 hover:border-[#C5CCD6] transition-all duration-200">
 
       {/* Product image */}
       <Link href={`/products/${id}`} className="w-[160px] h-[160px] shrink-0 relative rounded-lg bg-[#F7F7F7] overflow-hidden block">
